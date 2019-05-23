@@ -1,0 +1,38 @@
+    /dts-v1/;
+    /plugin/;
+
+    /{
+      compatible = "ti,am335x-bone-black", "ti,am335x-bone", "ti,am33xx";
+      version = "0001";
+
+      fragment@0 {
+          target-path = "/ocp";
+
+          __overlay__ {
+            pruss: pruss@4a300000 {
+                       compatible = "ti,pruss-v2";
+                       reg = <0x4a300000 0x080000>;
+                       interrupt-parent = <&intc>;
+                       interrupts = <20 21 22 23 24 25 26 27>;
+                       status = "okay";
+                       pinctrl-names = "default";
+                       pinctrl-0 = <&pru_pru_pins>;
+                   };
+          };
+      };
+
+      fragment@1 {
+          target = <&am33xx_pinmux>;
+          //target-path = "/ocp/l4_wkup@44c00000/scm@210000/pinmux@800";
+          __overlay__ {
+
+            pru_pru_pins: pinmux_pru_pru_pins {
+                      pinctrl-single,pins = <
+                          // 0x1a4 0x05   /* P9.27 pr1_pru0_pru_r30_5, Mode 5 output pull-down   */
+                          // 0x19c 0x06   /* P9.28 pr1_pru0_pru_r31_3, Mode 6 input pull-down    */
+                          0x198 0x05	/* PRU0-2 -- P9.30 -- pr1_pru0_pru_r30_2 ... se in MODE-5  */
+                          >;
+                  };
+          };
+      };
+    };
